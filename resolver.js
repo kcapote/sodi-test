@@ -1,4 +1,4 @@
-profit =  (array) => {
+const profit =  (array) => {
    
     maxProfit = -1;
 
@@ -27,25 +27,30 @@ profit =  (array) => {
 }
 
 
-url = (shortid) => {
+const url = (shortid) => {
 
     let urls = [];
 
     const shortStringUrl = (url) => {
-        let key = shortid.generate();
-        //let key = 'KDS14ojXX';
-        let obj = { key, url };
-        urls = [...urls, obj];
+        const key = shortid.generate();        
+        const obj = { key, url };
+        urls.push(obj) ;
         return key;
     }
 
-    const initialUrl = (shortUrl) => {        
-        return urls.find(url => url.key = shortUrl );
+    const initialUrl = (shortUrl) => {
+        let result = urls.find(url => url.key === shortUrl);
+        return result ? result.url : 'No existe la url';
+      }
+
+    const list = () => {
+        return urls;
     }
 
     return {
         shortStringUrl,
-        initialUrl
+        initialUrl,
+        list
     }
 
 }

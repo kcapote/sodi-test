@@ -1,14 +1,16 @@
-module.exports = ( { urlHandler, express } ) => {
+module.exports = ( { urlHandler, profit, express } ) => {
     const router = express.Router();
 
-    router.get('/maxProfit', (req, res) => {
+    router.post('/profit/max', (req, res) => {
+        const array = req.body.array;
         return res.json({
-            ok: true
+            ok: true,
+            maxProfit: profit(array).calculateMaxProfit()
         });
     });
 
-    router.get('/urlShort/:url', (req, res) => {
-        let url = req.params.url;
+    router.post('/urls/short', (req, res) => {
+        let url = req.body.url;
         return res.json({
             ok: true,
             shortUrl: urlHandler.shortStringUrl(url)
@@ -16,13 +18,23 @@ module.exports = ( { urlHandler, express } ) => {
 
     });
 
-    router.get('/urlInit/:urlShort', (req, res) => {
+    router.get('/urls/init/:urlShort', (req, res) => {
         let urlShort = req.params.urlShort;
         return res.json({            
             ok: true,
             urlInit: urlHandler.initialUrl(urlShort)
         });
     });
+
+    router.get('/urls', (req, res) =>{
+        
+        return res.json({
+            ok: true,
+            urls: urlHandler.list()
+        });
+    });
+
+
 
     return router;
 

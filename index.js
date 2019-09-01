@@ -1,7 +1,10 @@
 //generador de hash
-const shortid = require('shortid');
+const shortid = require('short-id');
 //express
 const express = require('express');
+
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,44 +14,44 @@ const { profit, url } = require('./resolver');
 const  urlHandler = url(shortid);
 const routes = require('./routes/routes.js'); 
 
-app.use(routes({urlHandler, express}) );
+app.use(cors());
+app.use(bodyParser.json());
+app.use(routes({urlHandler, profit ,express}) );
+
+//configuracion del front
+app.use(express.static(__dirname + '/public'));
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/public/index.html'));
+});
 
 app.listen(port, () =>{
     console.log(`Service running on port ${ port }`);
 });
 
 
+///////////Descomentar esta sección si  se quiere probar sin el api rest
+//  const { profit, url } = require('./resolver');
+//  const shortid = require('short-id');
+//  let testArray = [44, 30, 22, 32, 35, 30, 41, 38, 15];
+//  let testArray1 = [2,3,4,2];
+//  let testArray2 = [50, 30, 4, 2];
 
-//test
-// let testArray = [44, 30, 22, 32, 35, 30, 41, 38, 15];
-// let test2 = [2,3,4,2];
-// let test3 = [50, 30, 4, 2];
-
-// console.log(`Maxima ganancia  ${profit(testArray).calculateMaxProfit() } `);
-// console.log(`Maxima ganancia  ${profit(test2).calculateMaxProfit() } `);
-// console.log(`Maxima ganancia  ${profit(test3).calculateMaxProfit() } `);
+//  console.log(`Maxima ganancia  ${profit(testArray ).calculateMaxProfit() }`);
+//  console.log(`Maxima ganancia  ${profit(testArray1).calculateMaxProfit() }`);
+//  console.log(`Maxima ganancia  ${profit(testArray2).calculateMaxProfit() }`);
 
 
+// const urlHandler = url(shortid);
+// const shortStringUrl1 = urlHandler.shortStringUrl('www.google.com');
+// const shortStringUrl2 = urlHandler.shortStringUrl('www.youtube.com');
 
-// const add = ( () =>{
-//     let count = 0;
+// console.log({shortStringUrl1, shortStringUrl2});
 
-//     return () =>{
-//         return count +1;
-//     }
+// console.log({
+//     initUrl1: urlHandler.initialUrl(shortStringUrl1),
+//     initUrl2: urlHandler.initialUrl(shortStringUrl2)
+// })
 
-// } )();
+// console.log({ list: urlHandler.list()});
 
-// console.log(add());
 
-// const d = function(){
-//     let r = 0;
-//     return function(){
-//         r+=1;
-//         return r;
-//     }
-// };
-
-// let t = d();
-// console.log(t());
-// console.log(t());
